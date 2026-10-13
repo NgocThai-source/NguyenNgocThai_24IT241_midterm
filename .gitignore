@@ -1,0 +1,13 @@
+# Build output
+/ls
+obj/
+*.o
+*.d
+*.dSYM/
+
+# Editor / OS files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
