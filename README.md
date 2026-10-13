@@ -4,7 +4,7 @@ A simplified re-implementation of the UNIX `ls(1)` command written in C from
 scratch, following the provided NetBSD manual page (`ls.pdf`).
 
 - **Student:** Nguyễn Ngọc Thái – 24IT241
-- **Repository:** https://github.com/NgocThai-source/NguyenNgocThai_24IT241_Midterm_DHMT
+- **Repository:** https://github.com/NgocThai-source/NguyenNgocThai_24IT241_midterm
 
 ---
 
