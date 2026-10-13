@@ -111,6 +111,7 @@ parse_options(int argc, char **argv)
     int ch;
     int no_sort = 0;
 
+    opterr = 0;     /* report unknown options ourselves, as "ls: ..." */
     while ((ch = getopt(argc, argv, "AacdFfhiklnqRrSstuw")) != -1) {
         switch (ch) {
         case 'A':
@@ -175,6 +176,7 @@ parse_options(int argc, char **argv)
             g_opts.show_blocks = 1;
             break;
         default:
+            fprintf(stderr, "ls: unknown option -- %c\n", optopt);
             usage();
         }
     }
