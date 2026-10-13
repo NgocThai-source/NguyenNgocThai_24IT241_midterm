@@ -25,6 +25,37 @@ entry_time(const struct entry *e)
     }
 }
 
+/*
+ * Nanosecond part of the selected timestamp, so that files changed within
+ * the same second are still ordered correctly. macOS names the timespec
+ * fields st_*timespec, other POSIX.1-2008 systems name them st_*tim.
+ */
+static long
+entry_time_nsec(const struct entry *e)
+{
+#if defined(__APPLE__)
+    switch (g_opts.time) {
+    case TIME_CHANGE:
+        return e->st.st_ctimespec.tv_nsec;
+    case TIME_ACCESS:
+        return e->st.st_atimespec.tv_nsec;
+    case TIME_MODIFY:
+    default:
+        return e->st.st_mtimespec.tv_nsec;
+    }
+#else
+    switch (g_opts.time) {
+    case TIME_CHANGE:
+        return e->st.st_ctim.tv_nsec;
+    case TIME_ACCESS:
+        return e->st.st_atim.tv_nsec;
+    case TIME_MODIFY:
+    default:
+        return e->st.st_mtim.tv_nsec;
+    }
+#endif
+}
+
 static int
 cmp_name(const struct entry *a, const struct entry *b)
 {
@@ -36,9 +67,14 @@ cmp_time(const struct entry *a, const struct entry *b)
 {
     time_t ta = entry_time(a);
     time_t tb = entry_time(b);
+    long na, nb;
 
     if (ta != tb)
         return ta > tb ? -1 : 1;    /* most recent first */
+    na = entry_time_nsec(a);
+    nb = entry_time_nsec(b);
+    if (na != nb)
+        return na > nb ? -1 : 1;
     return cmp_name(a, b);
 }
 
