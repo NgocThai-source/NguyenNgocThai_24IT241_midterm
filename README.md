@@ -11,7 +11,7 @@ scratch, following the provided NetBSD manual page (`ls.pdf`).
 ## 1. Build and run
 
 Requirements: a C99 compiler (`cc`, `gcc` or `clang`) and `make`, on any
-POSIX system (tested on macOS; also builds on Linux and NetBSD).
+POSIX system (tested on macOS and on Linux with gcc 14).
 
 ```sh
 make            # builds the ./ls executable
@@ -115,6 +115,8 @@ crw-rw-rw- 1 root   wheel    3,   2 Oct 13 22:33 /dev/null
 - Symlink targets of any length are read with a growing buffer.
 - `-q` decodes names in the current locale, so UTF‑8 names (e.g.
   `tiếng việt`) are printed correctly while control characters become `?`.
+- `-t` compares timestamps down to the nanosecond, so files modified within
+  the same second are still ordered correctly.
 - Tested with AddressSanitizer / UBSan (`make debug`) on large trees
   (`/etc`, `/dev`, `/usr/share/zoneinfo`): no memory errors.
 
